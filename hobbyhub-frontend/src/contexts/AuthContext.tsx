@@ -1,22 +1,5 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
-import { useQuery, useMutation, useQueryClient } from 'react-query';
-import axios from 'axios';
-import toast from 'react-hot-toast';
-
-interface User {
-  _id: string;
-  email: string;
-  firstName: string;
-  lastName: string;
-  profilePicture?: string;
-  bio?: string;
-  location?: string;
-  hobbyInterests: string[];
-  subscriptionTier: string;
-  achievements: any[];
-  createdAt: string;
-  isEmailVerified: boolean;
-}
+import { authApi, User } from '@/services/api';
 
 interface AuthContextType {
   user: User | null;
@@ -25,14 +8,14 @@ interface AuthContextType {
   login: (email: string, password: string) => Promise<void>;
   register: (userData: RegisterData) => Promise<void>;
   logout: () => void;
-  updateProfile: (profileData: Partial<User>) => Promise<void>;
+  socialLogin: (provider: 'google' | 'facebook') => void;
 }
 
 interface RegisterData {
-  email: string;
-  password: string;
   firstName: string;
   lastName: string;
+  email: string;
+  password: string;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -51,119 +34,70 @@ interface AuthProviderProps {
 
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
-  const queryClient = useQueryClient();
+  const [isLoading, setIsLoading] = useState(true);
 
   // Check if user is authenticated on mount
-  const { data: currentUser, isLoading } = useQuery(
-    'currentUser',
-    async () => {
-      const token = localStorage.getItem('token');
-      if (!token) return null;
-
-      const response = await axios.get('/api/auth/me', {
-        headers: { Authorization: `Bearer ${token}` }
-      });
-      return response.data.data.user;
-    },
-    {
-      onSuccess: (data) => {
-        setUser(data);
-      },
-      onError: () => {
-        localStorage.removeItem('token');
-        setUser(null);
+  useEffect(() => {
+    const initAuth = async () => {
+      const token = localStorage.getItem('authToken');
+      if (token) {
+        try {
+          const response = await authApi.getCurrentUser();
+          setUser(response.data.user);
+        } catch (error) {
+          // Token is invalid, remove it
+          localStorage.removeItem('authToken');
+          setUser(null);
+        }
       }
-    }
-  );
+      setIsLoading(false);
+    };
 
-  // Login mutation
-  const loginMutation = useMutation(
-    async ({ email, password }: { email: string; password: string }) => {
-      const response = await axios.post('/api/auth/login', { email, password });
-      return response.data;
-    },
-    {
-      onSuccess: (data) => {
-        const { user, token } = data.data;
-        localStorage.setItem('token', token);
-        setUser(user);
-        queryClient.invalidateQueries('currentUser');
-        toast.success('Login successful!');
-      },
-      onError: (error: any) => {
-        toast.error(error.response?.data?.message || 'Login failed');
-      }
-    }
-  );
-
-  // Register mutation
-  const registerMutation = useMutation(
-    async (userData: RegisterData) => {
-      const response = await axios.post('/api/auth/register', userData);
-      return response.data;
-    },
-    {
-      onSuccess: (data) => {
-        const { user, token } = data.data;
-        localStorage.setItem('token', token);
-        setUser(user);
-        queryClient.invalidateQueries('currentUser');
-        toast.success('Registration successful! Please check your email to verify your account.');
-      },
-      onError: (error: any) => {
-        toast.error(error.response?.data?.message || 'Registration failed');
-      }
-    }
-  );
-
-  // Update profile mutation
-  const updateProfileMutation = useMutation(
-    async (profileData: Partial<User>) => {
-      const token = localStorage.getItem('token');
-      const response = await axios.put('/api/profile', profileData, {
-        headers: { Authorization: `Bearer ${token}` }
-      });
-      return response.data;
-    },
-    {
-      onSuccess: (data) => {
-        setUser(data.data.user);
-        queryClient.invalidateQueries('currentUser');
-        toast.success('Profile updated successfully!');
-      },
-      onError: (error: any) => {
-        toast.error(error.response?.data?.message || 'Profile update failed');
-      }
-    }
-  );
+    initAuth();
+  }, []);
 
   const login = async (email: string, password: string) => {
-    await loginMutation.mutateAsync({ email, password });
+    try {
+      const response = await authApi.login({ email, password });
+      const { user, token } = response.data;
+
+      localStorage.setItem('authToken', token);
+      setUser(user);
+    } catch (error: any) {
+      throw new Error(error.response?.data?.message || 'Login failed');
+    }
   };
 
   const register = async (userData: RegisterData) => {
-    await registerMutation.mutateAsync(userData);
+    try {
+      const response = await authApi.register(userData);
+      const { user, token } = response.data;
+
+      localStorage.setItem('authToken', token);
+      setUser(user);
+    } catch (error: any) {
+      throw new Error(error.response?.data?.message || 'Registration failed');
+    }
   };
 
   const logout = () => {
-    localStorage.removeItem('token');
+    localStorage.removeItem('authToken');
     setUser(null);
-    queryClient.clear();
-    toast.success('Logged out successfully');
   };
 
-  const updateProfile = async (profileData: Partial<User>) => {
-    await updateProfileMutation.mutateAsync(profileData);
+  const socialLogin = (provider: 'google' | 'facebook') => {
+    const authUrl = provider === 'google' ? authApi.getGoogleAuthUrl() : authApi.getFacebookAuthUrl();
+    window.location.href = authUrl;
   };
 
   const value: AuthContextType = {
-    user: user || currentUser || null,
+    user,
     isLoading,
-    isAuthenticated: !!user || !!currentUser,
+    isAuthenticated: !!user,
     login,
     register,
     logout,
-    updateProfile
+    socialLogin
   };
 
   return (

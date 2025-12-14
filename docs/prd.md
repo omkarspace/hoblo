@@ -1,5 +1,5 @@
 ---
-stepsCompleted: [1, 2, 3, 4, 6, 7]
+stepsCompleted: [1, 2, 3, 4, 6, 7, 8, 9, 10, 11]
 inputDocuments: ["project_prd.md", "docs/architecture.md", "docs/epics.md", "docs/ux-design-specification.md"]
 documentCounts:
   briefs: 0
@@ -226,3 +226,310 @@ These journeys reveal the following critical UI modernization requirements:
 - Consistent design token system
 - Modern interaction patterns and micro-interactions
 - Responsive design across all device types
+
+## Web App Specific Requirements
+
+### Web App Overview
+
+HobbyHub is implemented as a modern Single Page Application (SPA) built with React, optimized for community interactions and real-time engagement. The application prioritizes performance, accessibility, and search engine discoverability while maintaining the responsive, intuitive experience required for a thriving hobby community platform.
+
+### Browser Matrix & Support
+
+**Target Browsers:**
+- Chrome 90+ (Primary development target)
+- Firefox 88+
+- Safari 14+
+- Edge 90+
+
+**Support Strategy:**
+- Modern JavaScript features (ES2020+)
+- CSS Grid and Flexbox layouts
+- Progressive enhancement approach
+- Graceful degradation for unsupported features
+
+### Responsive Design & Mobile Optimization
+
+**Breakpoint Strategy:**
+- Mobile: 320px - 767px
+- Tablet: 768px - 1023px
+- Desktop: 1024px+
+- Large Desktop: 1440px+
+
+**Mobile-First Approach:**
+- Touch-optimized interactions for community engagement
+- Swipe gestures for content navigation
+- Optimized forms for mobile input
+- Camera integration for hobby content creation
+
+### Performance Targets
+
+**Core Web Vitals:**
+- Largest Contentful Paint (LCP): <2.5 seconds
+- First Input Delay (FID): <100 milliseconds
+- Cumulative Layout Shift (CLS): <0.1
+
+**Community-Specific Performance:**
+- Group page load: <1.5 seconds
+- Content creation save: <500 milliseconds
+- Real-time message delivery: <200 milliseconds
+- Image upload processing: <3 seconds
+
+### SEO Strategy & Implementation
+
+**Technical SEO:**
+- Server-side rendering for initial page loads
+- Dynamic meta tags for community and content pages
+- Structured data markup for hobby categories and events
+- Social media meta tags for content sharing
+
+**Content SEO:**
+- Semantic HTML structure for community content
+- Accessible heading hierarchy for screen readers
+- Descriptive alt text for hobby-related images
+- URL structure optimized for community navigation
+
+### Accessibility Level & Compliance
+
+**WCAG 2.1 AA Compliance:**
+- Keyboard navigation for all interactive elements
+- Screen reader compatibility with ARIA labels
+- Color contrast ratios meeting AA standards
+- Focus management and visible focus indicators
+- Form validation with clear error messaging
+
+**Community-Specific Accessibility:**
+- High-contrast themes for users with visual impairments
+- Keyboard shortcuts for power users
+- Alternative text for all hobby-related media
+- Caption support for community video content
+
+### Real-Time Features Architecture
+
+**WebSocket Implementation:**
+- Persistent connections for community presence
+- Real-time messaging in groups and direct chats
+- Live notifications for mentions and interactions
+- Instant content updates across sessions
+
+**Performance Optimization:**
+- Connection pooling and automatic reconnection
+- Message queuing during network interruptions
+- Battery-aware updates on mobile devices
+- Bandwidth optimization for community media
+
+### Implementation Considerations
+
+**Technology Stack Integration:**
+- shadcn components designed for accessibility compliance
+- Theme system supporting high-contrast accessibility modes
+- Responsive grid system for community content layouts
+- Performance monitoring integrated with real-time features
+
+**Development Best Practices:**
+- Automated accessibility testing in CI/CD pipeline
+- Performance budgets enforced during development
+- Cross-browser testing for consistent community experience
+- SEO validation tools integrated into deployment process
+
+## Project Scoping & Phased Development
+
+### MVP Strategy & Philosophy
+
+**MVP Approach:** Experience MVP - Deliver complete modern user experience across all user types to establish HobbyHub as a premium community platform from day one.
+
+**Resource Requirements:** 2-3 month timeline with frontend-focused team (2-3 developers + designer) leveraging existing backend infrastructure.
+
+### MVP Feature Set (Phase 1: Weeks 1-8)
+
+**Complete UI Modernization Coverage:**
+
+**Core User Experience (Primary Focus):**
+- End user community discovery and engagement flows
+- Authentication and onboarding with modern design
+- Community browsing, group participation, and content viewing
+- Real-time messaging and notifications interfaces
+
+**Administrative & Management Tools:**
+- Community manager moderation dashboards
+- Platform administrator oversight interfaces
+- Content creator management and monetization tools
+- Support staff troubleshooting interfaces
+
+**Technical Foundation:**
+- Complete shadcn component library implementation
+- Design token system with no hardcoded colors
+- WCAG AA accessibility compliance
+- Performance optimization for Core Web Vitals
+- Real-time feature architecture
+
+### Post-MVP Features (Phase 2: Months 3-6)
+
+**Enhanced User Experience:**
+- Advanced personalization and recommendations
+- Dark mode and high-contrast accessibility themes
+- Progressive Web App capabilities
+- Advanced animation and micro-interactions
+
+**Platform Expansion:**
+- Advanced analytics and reporting dashboards
+- A/B testing framework for design iterations
+- Automated accessibility compliance monitoring
+- Cross-platform design system expansion
+
+**Advanced Features:**
+- AI-powered content recommendations
+- Advanced community visualization tools
+- Mobile-native camera integration
+- Advanced creator monetization features
+
+### Vision Features (Phase 3+: Months 6-12+)
+
+**Platform Transformation:**
+- Industry-leading community UX innovation
+- Advanced real-time collaboration features
+- Cross-platform consistency expansion
+- AI-assisted design and content optimization
+
+### Risk Mitigation Strategy
+
+**Technical Risks:**
+- Component migration complexity: Mitigated by phased rollout with feature flags
+- Performance impact: Addressed with performance budgets and monitoring
+- Accessibility compliance: Built into component library selection
+
+**Market Risks:**
+- User adoption of new design: Validated through user testing in MVP
+- Feature discoverability: Resolved with intuitive navigation patterns
+
+**Resource Risks:**
+- Timeline pressure: Managed through focused scope on complete experience
+- Team bandwidth: Leveraged existing backend, focused on frontend transformation
+
+**Launch Readiness:** MVP includes complete user experience across all user types, ensuring immediate professional perception upon launch.
+
+## Functional Requirements
+
+### User Identity & Access Management
+
+- FR1: New users can register accounts with email verification and password requirements
+- FR2: Registered users can authenticate via email/password or social login providers
+- FR3: Users can manage their profile information including bio, location, and hobby interests
+- FR4: Users can upload and update profile pictures with automatic resizing and optimization
+- FR5: Users can configure privacy settings for profile visibility and content sharing
+- FR6: Users can securely reset passwords through email verification process
+
+### Community Discovery & Navigation
+
+- FR7: Users can browse hobby categories organized by interest areas
+- FR8: Users can search communities by keywords, categories, and popularity
+- FR9: Users can view detailed community information including member count and activity
+- FR10: Users can join and leave communities with confirmation workflows
+- FR11: Users can access personalized community recommendations based on interests
+- FR12: Users can navigate between communities using consistent, intuitive patterns
+
+### Content Creation & Sharing
+
+- FR13: Authenticated users can create and publish text content in communities
+- FR14: Users can upload and share images and media with automatic optimization
+- FR15: Users can edit and update their published content
+- FR16: Users can delete their own content with appropriate confirmation
+- FR17: Users can view content engagement metrics (views, likes, comments)
+- FR18: Users can share content links externally with social media integration
+
+### Social Interaction & Communication
+
+- FR19: Users can participate in community discussions through comments and replies
+- FR20: Users can send direct messages to other community members
+- FR21: Users can create and participate in group chat conversations
+- FR22: Users can receive real-time notifications for mentions and interactions
+- FR23: Users can moderate their own content interactions and block unwanted contacts
+- FR24: Users can view activity feeds showing recent community and personal interactions
+
+### Platform Administration & Moderation
+
+- FR25: Community moderators can review and approve flagged content
+- FR26: Moderators can manage group memberships and member roles
+- FR27: Platform administrators can access system-wide user management tools
+- FR28: Administrators can view platform analytics and performance metrics
+- FR29: Support staff can access user accounts for troubleshooting assistance
+- FR30: Administrators can configure platform-wide settings and policies
+
+### Monetization & Subscription Management
+
+- FR31: Users can view available subscription tiers with feature comparisons
+- FR32: Users can upgrade and downgrade subscriptions with payment processing
+- FR33: Content creators can access monetization dashboards and earnings tracking
+- FR34: Users can manage billing information and view payment history
+- FR35: Platform can process recurring subscription payments automatically
+- FR36: Users can cancel subscriptions with appropriate retention workflows
+
+### Personalization & Accessibility
+
+- FR37: Users can customize interface appearance through theme selection
+- FR38: Users can adjust accessibility settings including font size and contrast
+- FR39: Users can configure notification preferences and delivery methods
+- FR40: Users can access keyboard navigation and screen reader compatibility
+- FR41: Users can manage language preferences and localization settings
+- FR42: Users can customize content filters and recommendation preferences
+
+## Non-Functional Requirements
+
+### Security
+
+**Authentication & Authorization:**
+- All user sessions must use secure JWT tokens with 30-minute expiration
+- Passwords must be hashed using bcrypt with minimum 12 rounds
+- Multi-factor authentication required for admin and moderator accounts
+- Session invalidation on suspicious activity detection
+
+**Data Protection:**
+- All user data encrypted at rest using AES-256 encryption
+- HTTPS required for all data transmission (TLS 1.3 minimum)
+- Payment information processed through PCI DSS compliant Stripe integration
+- User profile data segregated by privacy settings with access controls
+
+**Platform Security:**
+- SQL injection prevention through parameterized queries
+- XSS protection through input sanitization and CSP headers
+- CSRF protection on all state-changing operations
+- Rate limiting implemented on API endpoints (100 requests/minute per user)
+
+### Scalability
+
+**User Load Handling:**
+- Platform must support 10,000 concurrent users without performance degradation
+- Database queries must maintain sub-500ms response times under peak load
+- Real-time messaging must handle 1,000 concurrent chat sessions
+- Image upload processing must scale to 500 concurrent uploads
+
+**Community Growth:**
+- Database schema must support 1 million users and 100,000 communities
+- Search functionality must maintain <2 second response times for 1M+ content items
+- Analytics processing must handle daily activity from 50,000 active users
+- Notification system must deliver to all users within 30 seconds of trigger
+
+**Resource Management:**
+- Automatic scaling of WebSocket connections based on active users
+- CDN optimization for media assets across global regions
+- Database connection pooling with automatic failover
+- Memory usage must remain under 80% during peak community activity
+
+### Integration
+
+**Backend API Integration:**
+- RESTful API endpoints must maintain 99.9% uptime
+- API response format must be consistent JSON with proper HTTP status codes
+- Authentication tokens must be seamlessly validated across frontend-backend
+- Error handling must provide clear, actionable messages to users
+
+**Third-Party Service Integration:**
+- Stripe payment processing must handle subscription lifecycle events
+- Social login providers (Google, Facebook) must maintain <5 second auth flow
+- Email service integration must deliver notifications within 10 seconds
+- Analytics tracking must not impact page load performance
+
+**Data Synchronization:**
+- Real-time updates must synchronize across all user sessions within 2 seconds
+- Offline content must sync seamlessly when connection restored
+- User preferences must persist across devices and sessions
+- Community membership changes must propagate instantly to all affected users

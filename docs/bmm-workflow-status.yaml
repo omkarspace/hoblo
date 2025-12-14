@@ -34,3 +34,6 @@ workflow_status:
   implementation-readiness: docs/sprint-artifacts/user-stories.md
   sprint-planning: docs/sprint-artifacts/sprint-planning.md
   sprint-implementation: docs/sprint-artifacts/sprint-status.yaml
+  sprint-2-planning: docs/sprint-artifacts/sprint-2-planning.md
+  sprint-2-status: docs/sprint-artifacts/sprint-2-status.yaml
+  prd: docs/prd.md
